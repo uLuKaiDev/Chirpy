@@ -1,0 +1,29 @@
+// This file is a collection of HTTP request for testing purposes
+
+
+// The below is just the standard access to the file server
+http://localhost:8080/app/
+
+###
+http://localhost:8080/app/assets
+
+###
+// Test for the server readiness
+GET http://localhost:8080/api/healthz
+
+###
+// Validates a chirp. Chirp is of type json with a .body field
+POST http://localhost:8080/api/validate_chirp
+Content-Type: application/json
+
+{
+	"body": "I had something interesting for breakfast"
+}
+
+###
+// This shows how many times the server has been accessed
+GET http://localhost:8080/admin/metrics 
+
+###
+// This test the resetting function of the access counter
+POST http://localhost:8080/admin/reset 
