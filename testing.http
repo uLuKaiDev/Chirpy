@@ -29,3 +29,20 @@ Content-Type: application/json
   "body": "Chirpy has a very nice fornax Sharbert!"
 }
 
+###
+// Creates a user #1
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "email": "dackjorsey@example.co"
+}
+
+###
+// Creates a user #2
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "email": "mloneusk@example.co"
+}
