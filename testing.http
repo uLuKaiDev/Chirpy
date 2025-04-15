@@ -16,18 +16,8 @@ GET http://localhost:8080/api/healthz
 GET http://localhost:8080/admin/metrics 
 
 ###
-// Reset counter
+// Reset database
 POST http://localhost:8080/admin/reset 
-
-###
-// Validates a chirp. 
-//Chirp is of type json with a .body field
-POST http://localhost:8080/api/validate_chirp
-Content-Type: application/json
-
-{
-  "body": "Chirpy has a very nice fornax Sharbert!"
-}
 
 ###
 // Creates a user #1
@@ -35,7 +25,7 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-  "email": "dackjorsey@example.co"
+  "email": "someoneelse@example.com"
 }
 
 ###
@@ -44,5 +34,15 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-  "email": "mloneusk@example.co"
+  "email": "saul@bettercall.com"
+}
+
+###
+// Create a test chirp
+POST http://localhost:8080/api/chirps
+Content-Type: 
+
+{
+  "body": "If you're committed enough, you can make any story work.",
+  "user_id": "06c052a5-806b-4b38-a221-97b04d46f8b7"
 }
