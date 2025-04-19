@@ -10,18 +10,18 @@ import (
 	"github.com/uLuKaiDev/Chirpy/internal/database"
 )
 
-func (cfg *apiConfig) handlerCreateChirps(w http.ResponseWriter, r *http.Request) {
+type ChirpResponse struct {
+	ID        uuid.UUID `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Body      string    `json:"body"`
+	UserID    uuid.UUID `json:"user_id"`
+}
+
+func (cfg *apiConfig) handlerChirpsCreate(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Body    string    `json:"body"`
 		User_ID uuid.UUID `json:"user_id"`
-	}
-
-	type ChirpResponse struct {
-		ID        string    `json:"id"`
-		CreatedAt time.Time `json:"created_at"`
-		UpdatedAt time.Time `json:"updated_at"`
-		Body      string    `json:"body"`
-		UserID    string    `json:"user_id"`
 	}
 
 	params := parameters{}
@@ -54,11 +54,11 @@ func (cfg *apiConfig) handlerCreateChirps(w http.ResponseWriter, r *http.Request
 	}
 
 	response := ChirpResponse{
-		ID:        chirp.ID.String(),
+		ID:        chirp.ID,
 		CreatedAt: chirp.CreatedAt,
 		UpdatedAt: chirp.UpdatedAt,
 		Body:      chirp.Body,
-		UserID:    chirp.UserID.String(),
+		UserID:    chirp.UserID,
 	}
 
 	respondWithJSON(w, http.StatusCreated, response)

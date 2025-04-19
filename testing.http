@@ -44,5 +44,14 @@ Content-Type:
 
 {
   "body": "If you're committed enough, you can make any story work.",
-  "user_id": "06c052a5-806b-4b38-a221-97b04d46f8b7"
+  "user_id": "60ff039b-164a-4371-9002-3ee89517c2ac"
 }
+
+###
+// Get all chirps
+GET http://localhost:8080/api/chirps
+
+###
+// Get a specific chirp (check psql chirpy for valid ID)
+GET http://localhost:8080/api/chirps/faa768b7-855f-4472-a7c6-e7d6ba44cb55
+
