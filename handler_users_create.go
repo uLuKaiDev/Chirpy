@@ -6,21 +6,25 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/uLuKaiDev/Chirpy/internal/auth"
+	"github.com/uLuKaiDev/Chirpy/internal/database"
 )
 
 type User struct {
-	ID        uuid.UUID `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Email     string    `json:"email"`
+	ID             uuid.UUID `json:"id"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	Email          string    `json:"email"`
+	Hashedpassword string    `json:"-"`
 }
 
 func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
-		Email string `json:"email"`
+		Password string `json:"password"`
+		Email    string `json:"email"`
 	}
 
-	type response struct {
+	type UserResponse struct {
 		User
 	}
 
@@ -31,14 +35,28 @@ func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request)
 		respondWithError(w, http.StatusInternalServerError, "couldn't decode parameters", err)
 		return
 	}
+	if params.Password == "" {
+		respondWithError(w, http.StatusBadRequest, "missing password", nil)
+		return
+	}
 
-	user, err := cfg.db.CreateUser(r.Context(), params.Email)
+	hashed_password, err := auth.HashPassword(params.Password)
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "couldn't hash password", err)
+		return
+	}
+
+	userParams := database.CreateUserParams{
+		Email:          params.Email,
+		HashedPassword: hashed_password,
+	}
+	user, err := cfg.db.CreateUser(r.Context(), userParams)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "couldn't create user", err)
 		return
 	}
 
-	respondWithJSON(w, http.StatusCreated, response{
+	respondWithJSON(w, http.StatusCreated, UserResponse{
 		User: User{
 			ID:        user.ID,
 			CreatedAt: user.CreatedAt,

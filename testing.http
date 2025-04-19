@@ -25,7 +25,8 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-  "email": "someoneelse@example.com"
+  "password": "04234",
+  "email": "lane@example.com"
 }
 
 ###
@@ -40,7 +41,7 @@ Content-Type: application/json
 ###
 // Create a test chirp
 POST http://localhost:8080/api/chirps
-Content-Type: 
+Content-Type: application/json
 
 {
   "body": "If you're committed enough, you can make any story work.",
@@ -55,3 +56,13 @@ GET http://localhost:8080/api/chirps
 // Get a specific chirp (check psql chirpy for valid ID)
 GET http://localhost:8080/api/chirps/faa768b7-855f-4472-a7c6-e7d6ba44cb55
 
+###
+// 6f7ea7dc-7208-4c59-a3ce-38362b78012c <- ID for lane@example.com>
+// Try the login api
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+ "email": "lane@example.com",
+ "password": "042341"
+}
