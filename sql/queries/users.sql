@@ -13,3 +13,10 @@ RETURNING *;
 SELECT * FROM users
 WHERE email = $1
 LIMIT 1;
+
+-- name: GetUserByRefreshToken :one
+SELECT u.*
+FROM users u
+JOIN refresh_tokens rt ON rt.user_id = u.id
+WHERE rt.token = $1
+LIMIT 1;

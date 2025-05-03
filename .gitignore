@@ -26,3 +26,6 @@ go.work.sum
 
 # Server executable
 out
+
+# VS Code settings
+.vscode/

@@ -1,68 +1,51 @@
-// This file is a collection of HTTP request for testing purposes
+@env = LocalEnv
 
-// Standard access to the file server
-http://localhost:8080/app/
+### Testing if the server is running
+# @name health
+GET {{hostname}}/api/healthz
 
-###
-// Access to assets endpoint
-http://localhost:8080/app/assets
+### Reset the database
+# @name reset
+POST {{hostname}}/admin/reset
 
-###
-// Server readiness check
-GET http://localhost:8080/api/healthz
+### Create a new user
+# @ name create_user
 
-###
-// Access to counter
-GET http://localhost:8080/admin/metrics 
-
-###
-// Reset database
-POST http://localhost:8080/admin/reset 
-
-###
-// Creates a user #1
-POST http://localhost:8080/api/users
+POST {{hostname}}/api/users
 Content-Type: application/json
 
 {
-  "password": "04234",
-  "email": "lane@example.com"
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
 
-###
-// Creates a user #2
-POST http://localhost:8080/api/users
+
+
+### Login and store tokens
+# @name login
+POST {{hostname}}/api/login
 Content-Type: application/json
 
 {
-  "email": "saul@bettercall.com"
+  "email": "{{email}}",
+  "password": "{{password}}"
 }
 
-###
-// Create a test chirp
-POST http://localhost:8080/api/chirps
+> {% 
+  client.global.set("access_token", response.body.token);
+  client.global.set("refresh_token", response.body.refresh_token);
+%}
+
+### Use refresh token to get a new access token
+# @name refresh
+POST {{hostname}}/api/refresh
 Content-Type: application/json
+Authorization: Bearer c9c7cbf8e8aa27fc9afcec7102fc6a53
 
-{
-  "body": "If you're committed enough, you can make any story work.",
-  "user_id": "60ff039b-164a-4371-9002-3ee89517c2ac"
-}
+> {% 
+  client.global.set("access_token", response.body.token);
+%}
 
-###
-// Get all chirps
-GET http://localhost:8080/api/chirps
 
-###
-// Get a specific chirp (check psql chirpy for valid ID)
-GET http://localhost:8080/api/chirps/faa768b7-855f-4472-a7c6-e7d6ba44cb55
-
-###
-// 6f7ea7dc-7208-4c59-a3ce-38362b78012c <- ID for lane@example.com>
-// Try the login api
-POST http://localhost:8080/api/users/login
-Content-Type: application/json
-
-{
- "email": "lane@example.com",
- "password": "042341"
-}
+### Get all chirps
+GET {{hostname}}/api/chirps
