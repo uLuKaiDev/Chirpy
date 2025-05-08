@@ -41,7 +41,11 @@ Content-Type: application/json
 # @name refresh
 POST {{hostname}}/api/refresh
 Content-Type: application/json
-Authorization: Bearer 83a706193af4ca40c499fdede51735cb
+Authorization: Bearer {{refresh_token}}
+
+{
+  "refresh_token": "{{refresh_token}}"
+}
 
 > {% 
   client.global.set("access_token", response.body.token);
@@ -50,3 +54,4 @@ Authorization: Bearer 83a706193af4ca40c499fdede51735cb
 
 ### Get all chirps
 GET {{hostname}}/api/chirps
+
