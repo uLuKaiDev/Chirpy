@@ -20,3 +20,12 @@ FROM users u
 JOIN refresh_tokens rt ON rt.user_id = u.id
 WHERE rt.token = $1
 LIMIT 1;
+
+-- name: UpdateUser :one
+UPDATE users
+SET updated_at = NOW(),
+    email = $2,
+    hashed_password = $3
+WHERE id = $1
+RETURNING *;
+

@@ -9,7 +9,7 @@ GET {{hostname}}/api/healthz
 POST {{hostname}}/admin/reset
 
 ### Create a new user
-# @ name create_user
+# @name create_user
 
 POST {{hostname}}/api/users
 Content-Type: application/json
@@ -18,7 +18,6 @@ Content-Type: application/json
   "email": "{{email}}",
   "password": "{{password}}"
 }
-
 
 
 ### Login and store tokens
@@ -34,13 +33,15 @@ Content-Type: application/json
 > {% 
   client.global.set("access_token", response.body.token);
   client.global.set("refresh_token", response.body.refresh_token);
+  client.log("Access token:", client.global.get("access_token"));
 %}
+
 
 ### Use refresh token to get a new access token
 # @name refresh
 POST {{hostname}}/api/refresh
 Content-Type: application/json
-Authorization: Bearer c9c7cbf8e8aa27fc9afcec7102fc6a53
+Authorization: Bearer 83a706193af4ca40c499fdede51735cb
 
 > {% 
   client.global.set("access_token", response.body.token);

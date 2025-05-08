@@ -58,20 +58,22 @@ func main() {
 		Handler: mux,
 	}
 	mux.Handle("/app/", cfg.middlewareMetricsInc(http.StripPrefix("/app/", http.FileServer(http.Dir(filepathRoot)))))
-
 	mux.HandleFunc("GET /api/healthz", handlerReadiness)
-	mux.HandleFunc("GET /api/chirps", cfg.handlerChirpsGet)
-	mux.HandleFunc("GET /api/chirps/{chirpID}", cfg.handlerChirpsGetByID)
 
-	mux.HandleFunc("POST /api/chirps", cfg.handlerChirpsCreate)
-
-	mux.HandleFunc("POST /api/users", cfg.handlerUsersCreate)
 	mux.HandleFunc("POST /api/login", cfg.handlerUsersLogin)
 	mux.HandleFunc("POST /api/refresh", cfg.handlerTokensRefresh)
 	mux.HandleFunc("POST /api/revoke", cfg.handlerTokensRevoke)
 
-	mux.HandleFunc("GET /admin/metrics", cfg.handlerMetrics)
+	mux.HandleFunc("POST /api/chirps", cfg.handlerChirpsCreate)
+	mux.HandleFunc("GET /api/chirps", cfg.handlerChirpsGet)
+	mux.HandleFunc("GET /api/chirps/{chirpID}", cfg.handlerChirpsGetByID)
+	mux.HandleFunc("DELETE /api/chirps/{chirpID}", cfg.handlerChirpsDelete)
+
+	mux.HandleFunc("POST /api/users", cfg.handlerUsersCreate)
+	mux.HandleFunc("PUT /api/users", cfg.handlerUsersUpdate)
+
 	mux.HandleFunc("POST /admin/reset", cfg.handlerReset)
+	mux.HandleFunc("GET /admin/metrics", cfg.handlerMetrics)
 
 	log.Printf("Serving on port %s\n", port)
 	log.Printf("Open http://localhost:%s in your browser\n", port)
