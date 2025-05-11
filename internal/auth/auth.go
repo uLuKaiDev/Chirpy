@@ -49,3 +49,15 @@ func MakeRefreshToken() (string, error) {
 	}
 	return encodedB[:32], nil
 }
+
+func GetAPIKey(headers http.Header) (string, error) {
+	apiKey := headers.Get("Authorization")
+	if apiKey == "" {
+		return "", nil
+	}
+	if len(apiKey) < 7 || apiKey[:7] != "ApiKey " {
+		return "", nil
+	}
+
+	return apiKey[7:], nil
+}
